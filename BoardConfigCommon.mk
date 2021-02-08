@@ -14,6 +14,12 @@
 
 BOARD_VENDOR := sony
 
+BUILD_BROKEN_DUP_RULES := true
+
+# Use Snapdragon LLVM Compiler if available
+TARGET_USE_SDCLANG := true
+
+
 PLATFORM_PATH := device/sony/msm8974-common
 
 TARGET_SPECIFIC_HEADER_PATH += $(PLATFORM_PATH)/include
@@ -25,6 +31,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := generic
 TARGET_CPU_VARIANT_RUNTIME := krait
+TARGET_CUSTOM_DTBTOOL := dtbToolLineage
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8974
@@ -32,10 +39,12 @@ TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
 # Kernel
-BOARD_KERNEL_BASE     := 0x00000000
 BOARD_KERNEL_IMAGE_NAME := zImage-dtb
+BOARD_KERNEL_BASE     := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
+BOARD_MKBOOTIMG_ARGS  := --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
+BOARD_KERNEL_SEPARATED_DT := true
+TARGET_DTB_EXTRA_FLAGS := --force-v2
 TARGET_KERNEL_SOURCE := kernel/sony/msm8974
 
 # Platform
@@ -68,6 +77,9 @@ TARGET_FS_CONFIG_GEN += $(PLATFORM_PATH)/config.fs
 OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS := 0x02000000U
 TARGET_USES_ION := true
+
+# Init configuration for init_sony
+BOARD_USES_INIT_SONY := true
 
 # Lights HAL
 TARGET_PROVIDES_LIBLIGHT := true
